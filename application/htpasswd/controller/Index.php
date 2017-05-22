@@ -5,11 +5,14 @@
 namespace app\htpasswd\controller;
 
 use think\Request;
+use app\htpasswd\model\HtpasswdModel;
+use think\Config;
 class Index
 {
-    public function index()
+    public function index(Request $request)
     {
-        echo 'list';
+    	$ht = new HtpasswdModel();
+    	echo $ht->create($request);
     }
     public function create(){
         echo 'create';
