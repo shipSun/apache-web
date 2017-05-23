@@ -1,0 +1,11 @@
+{layout name="layout/layout" /}
+<a href="create" class="btn btn-default" href="#" role="button">创建</a>
+<table class="table">
+{foreach $data as $val}
+    <tr>
+        <th>{$val['user']}</th>
+        <td>{$val['user']}</td>
+        <td>编辑&nbsp;&nbsp;删除</td>
+    </tr>
+{/foreach}
+</table>

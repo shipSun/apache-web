@@ -6,6 +6,7 @@
  
  use think\Config;
 use think\Log;
+use app\model\ApacheValue;
  
 class Command{
 	protected static $instance=false;
@@ -31,7 +32,7 @@ class Command{
  		return '';
  	}
  	protected function getConfig(){
- 		$config = Config::load(APP_PATH.'apache.php', 'apache');
+ 		$config = ApacheValue::instance()->getData();
  		log::record('加载apache配置:'.var_export($config,true), Log::DEBUG);
  		return $config;
  	}

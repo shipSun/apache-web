@@ -11,42 +11,47 @@ use app\dao\FactoryDao;
 use think\Queue;
 
 class HtpasswdModel{
-    public function create(Request $request){
-        $passwdFile =$request->param('path');
-        $user = $request->param('user');
-        $passwd = $request->param('passwd');
+    public function create($path, $user, $passwd){
+        $this->validate(['path'=>$path, 'user'=>$user, 'passwd'=>$passwd], 'create');
+        $this->insertDB($path, $user, $passwd);
         
-        $this->validate($request, 'create');
-        $this->insertQueue($passwdFile, $user, $passwd);
+        $this->insertQueue($path, $user, $passwd);
         
-        return $this->runCreateCommand($passwdFile, $user, $passwd);
+        return $this->runCreateCommand($path, $user, $passwd);
     }
-    protected function insertQueue($passwdFile, $user, $passwd){
-    	$data['passwdFile'] = $passwdFile;
+    protected function insertDB($path, $user, $passwd){
+    	$dao = FactoryDao::createDao('HtpasswdDao', 'htpasswd');
+    	$dao->insertUser($path, $user, $passwd);
+    }
+    protected function insertQueue($path, $user, $passwd){
+    	$data['passwdFile'] = $path;
     	$data['user'] = $user;
     	Queue::push('\app\htpasswd\job\UserJob', $data);
     }
-    protected function runCreateCommand($passwdFile, $user, $passwd){
-    	if(HtpasswdCommand::instance()->create($passwdFile, $user, $passwd)){
+    protected function runCreateCommand($path, $user, $passwd){
+    	if(HtpasswdCommand::instance()->create($path, $user, $passwd)){
     		return '添加用户成功';
     	}
     	throw new \Exception('添加用户失败', 500);
     }
-    public function delete(Request $request){
-    	$passwdFile =$request->param('path');
-    	$user = $request->param('user');
-    	$this->validate($request, 'delete');
-    	return $this->runDeleteCommand($passwdFile, $user);
+    public function delete($path, $user){
+    	$this->validate(['path'=>$path, 'user'=>$user], 'delete');
+    	
+    	return $this->runDeleteCommand($path, $user);
     }
-    protected function runDeleteCommand($passwdFile, $user){
-    	if(HtpasswdCommand::instance()->delete($passwdFile, $user)){
+    protected function runDeleteDB($path, $user){
+    	$dao = FactoryDao::createDao('HtpasswdDao', 'htpasswd');
+    	$dao->deleteUser($path, $user);
+    }
+    protected function runDeleteCommand($path, $user){
+    	if(HtpasswdCommand::instance()->delete($path, $user)){
     		return '删除用户成功';
     	}
     	throw new \Exception('删除用户失败', 500);
     }
-    protected function validate(Request $request, $scene){
+    protected function validate($data, $scene){
     	$validate = new HtpasswdValidate();
-    	$result  = $validate->scene($scene)->check($request->param());
+    	$result  = $validate->scene($scene)->check($data);
     	if($result==false){
     		throw new \Exception($validate->getError(), 500);
     	}
