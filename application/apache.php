@@ -7,6 +7,6 @@ return [
 		'suffix'=>'.exe',
 		'type'=>'redis',
 		'passwd_name'=>'.passwd',
-		'product_path'=>'F:\workspace\\',
+		'product_path'=>'F:\workspace\php\\',
 		'path'=>['aaa']
 ];
