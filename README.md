@@ -21,5 +21,5 @@
 
 AuthType "Basic"  
 AuthName "Password Required" 
-AuthUserFile "F:\WorkSpace\php\aaa\.passwd" #使用绝对路径
+AuthUserFile "F:\WorkSpace\php\aaa\.passwd" #使用绝对路径 
 Require valid-user 
