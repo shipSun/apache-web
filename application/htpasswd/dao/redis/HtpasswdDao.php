@@ -7,10 +7,21 @@
 use app\dao\db\redis\RedisDB;
 use app\model\RedisValue;
 use app\htpasswd\dao\HtpasswdDaoInterface;
+use think\Log;
 
 class HtpasswdDao implements HtpasswdDaoInterface{
 	protected $key='htpasswd';
 	
+	public function find($user, $path){
+		$db = RedisDB::instance();
+		$key = $this->getKey($path, $user);
+		$status = $db->exists($key);
+		Log::record('key检测:'.$key.',返回:'.$status, Log::DEBUG);
+		if($status==1){
+			return $this->getUserInfo($key);
+		}
+		return false;
+	}
 	public function listUser($offset=0, $limit=1000){
 		$db = RedisDB::instance();
 		$data = $db->zRange($this->key, $offset, $limit);
@@ -25,24 +36,23 @@ class HtpasswdDao implements HtpasswdDaoInterface{
 		$data['path'] = $db->hGet($key, 'path');
 		$data['user'] = $db->hGet($key, 'user');
 		$data['passwd'] = $db->hGet($key, 'passwd');
+		$data['date'] = $db->hGet($key, 'date');
 		$data['id'] = $db->ZSCORE ($this->key, $key);
+		$data['key'] = $key;
+		Log::record($key.'数据:'.var_export($data,true), Log::DEBUG);
 		return $data;
 	}
- 	public function insertUser($path, $user, $passwd){
+ 	public function insertUser($data){
  		$db = RedisDB::instance();
  		
- 		$this->saveKey($path, $user);
+ 		$this->saveKey($data['path'], $data['user']);
  		
  		$db->multi();
  		try{
- 			$db->watch($this->getKey($path, $user));
-	 		$db->expire($this->getKey($path, $user), RedisValue::instance()->expire);
-	 		$data = [];
-	 		$data['user'] = $user;
-	 		$data['passwd'] = $passwd;
-	 		$data['path'] = $path;
+ 			$db->watch($this->getKey($data['path'], $data['user']));
+	 		$db->expire($this->getKey($data['path'], $data['user']), RedisValue::instance()->expire);
 	 		
-	 		$db->hMset($this->getKey($path, $user), $data);
+	 		$db->hMset($this->getKey($data['path'], $data['user']), $data);
 	 		$db->exec();
 	 		$db->unwatch();
 	 		return true;
@@ -63,7 +73,7 @@ class HtpasswdDao implements HtpasswdDaoInterface{
  		try{
  			$db->watch($this->getKey($path, $user));
  			
- 			$this->delKey($user);
+ 			$this->delKey($this->getKey($path, $user));
  			
  			$db->del($this->getKey($path, $user));
  			$db->exec();

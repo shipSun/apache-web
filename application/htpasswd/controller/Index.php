@@ -9,11 +9,11 @@ use app\htpasswd\model\HtpasswdModel;
 use think\Config;
 use app\htpasswd\dao\redis\HtpasswdDao;
 use think\Controller;
+use app\model\Model;
 
 class Index extends Controller
 {
-    public function index(Request $request)
-    {
+    public function index(Request $request){
     	$this->assign('title', '列表页');
     	
     	$ht = new HtpasswdDao();
@@ -21,23 +21,63 @@ class Index extends Controller
     	return $this->fetch('list',['data'=>$data]);
     }
     public function create(Request $request){
-    	echo 'create';
+    	$this->assign('title', '创建界面');
+    	
+    	$htpasswdModel = new HtpasswdModel();
+    	$htpasswdModel->init();
+    	
+    	return $this->fetch('create',['model'=>$htpasswdModel]);
     }
     public function save(Request $request){
-        $ht = new HtpasswdModel();
-        $path =$request->param('path');
-        $user = $request->param('user');
-        $passwd = $request->param('passwd');
-        echo $ht->create($path,$user,$passwd);
+    	try{
+	        $data['path'] =$request->param('path');
+	        $data['user'] = $request->param('user');
+	        $data['passwd'] = $request->param('passwd');
+	        $data['date'] = strtotime($request->param('date').' 23:59:59');
+	        $ht = new HtpasswdModel($data);
+	        echo $ht->create();
+        }catch (\Exception $e){
+        	echo $e->getMessage();
+        }
     }
-    public function edit(Request $request, $id){
-        echo 'edit';
+    public function edit($id){
+    	$this->assign('title', '编辑界面');
+    	$request = $this->formatID($id);
+    	$htpasswdDao = new HtpasswdDao();
+    	$userInfo = $htpasswdDao->find($request[2], $request[0]);
+    	
+    	$htpasswdModel = new HtpasswdModel($userInfo);
+    	return $this->fetch('edit',['model'=>$htpasswdModel]);
     }
-    public function update(){
-        echo 'update';
+    public function update(Request $request, $id){
+    	try{
+	    	$userPath= $this->formatID($id);
+	    	$data['path'] =$userPath[0];
+	        $data['user'] = $userPath[2];
+	        $data['passwd'] = $request->param('passwd');
+	        $data['date'] = strtotime($request->param('date').' 23:59:59');
+	        $ht = new HtpasswdModel($data);
+	        echo $ht->create();
+    	}catch (\Exception $e){
+    		echo $e->getMessage();
+    	}
     }
-    public function delete(Request $request, $id){
-    	 $ht = new HtpasswdModel();
-        echo $ht->delete($request->param('path'), $request->param('user'));
+    public function delete($id){
+    	try{
+	    	$request = $this->formatID($id);
+	    	$data['path'] =$request[0];
+	    	$data['user'] = $request[2];
+	    	 $ht = new HtpasswdModel($data);
+	        echo $ht->delete();
+        }catch (\Exception $e){
+        	echo $e->getMessage();
+        }
+    }
+    protected function formatID($id){
+    	$request = explode(':', $id);
+    	if(count($request)!=3){
+    		throw new \Exception('参数格式错误');
+    	}
+    	return $request;
     }
 }

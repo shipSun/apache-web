@@ -1,11 +1,31 @@
 {layout name="layout/layout" /}
-<a href="create" class="btn btn-default" href="#" role="button">创建</a>
+<a href="{:url('/htpasswd/create',[],'', 'www')}" class="btn btn-default" href="#" role="button">创建</a>
 <table class="table">
-{foreach $data as $val}
+{foreach $data as $key=>$val}
     <tr>
-        <th>{$val['user']}</th>
+        <th>{++$key}</th>
         <td>{$val['user']}</td>
-        <td>编辑&nbsp;&nbsp;删除</td>
+        <td>{:date('Y-m-d', $val['date'])}</td>
+        <td><a href="{:url('/htpasswd')}/{$val['key']}/edit">编辑</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="delete" data-id="{$val['key']}">删除</a></td>
     </tr>
 {/foreach}
 </table>
+<script>
+$(function(){
+	$('.delete').click(function(){
+		var key=$(this).data('id');
+		var url='{:url("/htpasswd",[],"","www")}/'+key;
+        $.ajax({
+            url: url,
+            type: 'DELETE',
+            cache: false,
+            data: {"date":$('#form input[name=date]').val(),'passwd':$('#form input[name=passwd]').val()},
+        }).done(function(res) {
+            alert(res);
+           window.location.href="{:url('/htpasswd',[],'','www')}";
+        }).fail(function(res) {
+            alert(res);
+        });
+	})
+})
+</script>

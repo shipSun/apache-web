@@ -1,10 +1,33 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-
-</body>
-</html>
+{layout name="layout/layout" /}
+{include file="index/common/create_edit"}
+<script>
+$(function(){
+	$('.form_date').datetimepicker({
+        language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+	$('#submit').click(function(){
+		var url='{:url("/htpasswd",[],"","www")}';
+		var postData = new FormData($('#form')[0]);
+		$.ajax({
+		    url: url,
+		    type: 'POST',
+		    cache: false,
+		    data: postData,
+		    processData: false,
+		    contentType: false
+		}).done(function(res) {
+			alert(res);
+			window.location.href="{:url('/htpasswd',[],'','www')}";
+		}).fail(function(res) {
+			alert(res);
+		});
+	})
+})
+</script>

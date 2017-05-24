@@ -1,0 +1,30 @@
+{layout name="layout/layout" /}
+{include file="index/common/create_edit"}
+<script>
+$(function(){
+    $('.form_date').datetimepicker({
+        language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+    $('#submit').click(function(){
+        var url='{:url("/htpasswd",[],"","www")}/{$model->key}';
+        $.ajax({
+            url: url,
+            type: 'PUT',
+            cache: false,
+            data: {"date":$('#form input[name=date]').val(),'passwd':$('#form input[name=passwd]').val()},
+        }).done(function(res) {
+            alert(res);
+           window.location.href="{:url('/htpasswd',[],'','www')}";
+        }).fail(function(res) {
+            alert(res);
+        });
+    })
+})
+</script>

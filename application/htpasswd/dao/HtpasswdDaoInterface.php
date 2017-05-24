@@ -5,6 +5,8 @@
  namespace app\htpasswd\dao;
  
  interface HtpasswdDaoInterface{
- 	public function insertUser($path, $user, $passwd);
+ 	public function find($user, $path);
+ 	public function listUser($offset=0, $limit=1000);
+ 	public function insertUser($data);
  	public function deleteUser($path, $user);
  }
