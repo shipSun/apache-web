@@ -12,9 +12,9 @@
 
 ## 使用说明
 
-1、修改apache-web/application/config.php中url_domain_root为项目域名或ip
-2、修改apache-web/application/redus.php中连接地址、端口、密码
-3、修改apache-web/application/apache.php中apache安装目录、suffix执行shell后缀、product_path管理目录地址、path管理目录的目录名称
+1、修改apache-web/application/config.php中url_domain_root为项目域名或ip 
+2、修改apache-web/application/redus.php中连接地址、端口、密码 
+3、修改apache-web/application/apache.php中apache安装目录、suffix执行shell后缀、product_path管理目录地址、path管理目录的目录名称 
 4、启动队列php think queue:work --daemon
 
 .htaccess文件
