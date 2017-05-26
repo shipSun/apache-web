@@ -12,7 +12,7 @@
 
 ## 使用说明
 
-1、修改apache-web/application/config.php中url_domain_root为项目域名或ip
+1、修改apache-web/application/config.php中url_domain_root为项目域名
 
 2、修改apache-web/application/redus.php中连接地址、端口、密码
 
