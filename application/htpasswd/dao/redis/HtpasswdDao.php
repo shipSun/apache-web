@@ -36,6 +36,7 @@ class HtpasswdDao implements HtpasswdDaoInterface{
 		$data['path'] = $db->hGet($key, 'path');
 		$data['user'] = $db->hGet($key, 'user');
 		$data['passwd'] = $db->hGet($key, 'passwd');
+		$data['use'] = $db->hGet($key, 'use');
 		$data['date'] = $db->hGet($key, 'date');
 		$data['id'] = $db->ZSCORE ($this->key, $key);
 		$data['key'] = $key;

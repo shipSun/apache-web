@@ -18,7 +18,7 @@ $(function(){
             url: url,
             type: 'PUT',
             cache: false,
-            data: {"date":$('#form input[name=date]').val(),'passwd':$('#form input[name=passwd]').val()},
+            data: {"date":$('#form input[name=date]').val(),'passwd':$('#form input[name=passwd]').val(),'use':$('#form input[name=use]').val()},
         }).done(function(res) {
             alert(res);
            window.location.href="{:url('/htpasswd',[],'','www')}";

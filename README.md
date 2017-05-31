@@ -64,8 +64,13 @@ location ~ ^(.+\.php)(.*)$ {
 }
 
 虚拟机配置
+
 location ^~ /www/ {
+
         index index.html;
+        
         auth_basic "TEST-Login";
+        
         auth_basic_user_file /var/www/www/.passwd;
+        
 }

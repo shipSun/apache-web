@@ -18,6 +18,7 @@ class HtpasswdModel extends Model{
 		$this->user = '';
 		$this->passwd = '';
 		$this->date = time();
+		$this->use = '';
 	}
     public function create(array $data=[]){
     	if(!empty($data)){

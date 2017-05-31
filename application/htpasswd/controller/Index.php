@@ -33,6 +33,7 @@ class Index extends Controller
 	        $data['path'] =$request->param('path');
 	        $data['user'] = $request->param('user');
 	        $data['passwd'] = $request->param('passwd');
+	        $data['use'] = $request->param('use');
 	        $data['date'] = strtotime($request->param('date').' 23:59:59');
 	        $ht = new HtpasswdModel($data);
 	        echo $ht->create();
@@ -45,7 +46,6 @@ class Index extends Controller
     	$request = $this->formatID($id);
     	$htpasswdDao = new HtpasswdDao();
     	$userInfo = $htpasswdDao->find($request[2], $request[0]);
-    	
     	$htpasswdModel = new HtpasswdModel($userInfo);
     	return $this->fetch('edit',['model'=>$htpasswdModel]);
     }
@@ -55,6 +55,7 @@ class Index extends Controller
 	    	$data['path'] =$userPath[0];
 	        $data['user'] = $userPath[2];
 	        $data['passwd'] = $request->param('passwd');
+	        $data['use'] = $request->param('use');
 	        $data['date'] = strtotime($request->param('date').' 23:59:59');
 	        $ht = new HtpasswdModel($data);
 	        echo $ht->create();
