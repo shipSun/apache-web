@@ -1,10 +1,18 @@
 {layout name="layout/layout" /}
 <a href="{:url('/htpasswd/create',[],'', 'www')}" class="btn btn-default" href="#" role="button">创建</a>
 <table class="table">
+    <tr>
+        <th>编号</th>
+        <th>用户名</th>
+        <th>项目</th>
+        <th>时间</th>
+        <th>操作</th>
+    </tr>
 {foreach $data as $key=>$val}
     <tr>
         <th>{++$key}</th>
         <td>{$val['user']}</td>
+        <td>{$val['path']}</td>
         <td>{:date('Y-m-d', $val['date'])}</td>
         <td><a href="{:url('/htpasswd')}/{$val['key']}/edit">编辑</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="delete" data-id="{$val['key']}">删除</a></td>
     </tr>

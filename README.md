@@ -31,3 +31,41 @@ AuthName "Password Required"
 AuthUserFile "F:\WorkSpace\php\aaa\.passwd" #使用绝对路径
 
 Require valid-user 
+
+
+nginx配置
+
+if (!-d $request_filename){
+    set $rule_0 1$rule_0;
+}
+
+if (!-f $request_filename){
+    set $rule_0 2$rule_0;
+}
+
+if ($rule_0 = "21"){
+    rewrite ^/master/public(.*)$ /master/public/index.php/$1 last;
+}
+
+location ~ ^(.+\.php)(.*)$ {
+
+    fastcgi_pass        127.0.0.1:9000;
+    
+    fastcgi_index       index.php;
+    
+    fastcgi_split_path_info ^(.+\.php)(.*)$;
+    
+    fastcgi_param PATH_INFO $fastcgi_path_info;
+    
+    fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    
+    include             fastcgi_params;
+    
+}
+
+虚拟机配置
+location ^~ /www/ {
+        index index.html;
+        auth_basic "TEST-Login";
+        auth_basic_user_file /var/www/www/.passwd;
+}
