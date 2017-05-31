@@ -13,7 +13,7 @@ $(function(){
         forceParse: 0
     });
     $('#submit').click(function(){
-        var url='{:url("/htpasswd",[],"","www")}/{$model->key}';
+        var url='{:url("/htpasswd")}/{$model->key}';
         $.ajax({
             url: url,
             type: 'PUT',
@@ -21,7 +21,7 @@ $(function(){
             data: {"date":$('#form input[name=date]').val(),'passwd':$('#form input[name=passwd]').val(),'use':$('#form input[name=use]').val()},
         }).done(function(res) {
             alert(res);
-           window.location.href="{:url('/htpasswd',[],'','www')}";
+           window.location.href="{:url('/htpasswd')}";
         }).fail(function(res) {
             alert(res);
         });

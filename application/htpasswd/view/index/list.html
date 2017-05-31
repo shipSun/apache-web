@@ -1,5 +1,5 @@
 {layout name="layout/layout" /}
-<a href="{:url('/htpasswd/create',[],'', 'www')}" class="btn btn-default" href="#" role="button">创建</a>
+<a href="{:url('/htpasswd/create')}" class="btn btn-default" href="#" role="button">创建</a>
 <table class="table">
     <tr>
         <th>编号</th>
@@ -24,7 +24,7 @@
 $(function(){
 	$('.delete').click(function(){
 		var key=$(this).data('id');
-		var url='{:url("/htpasswd",[],"","www")}/'+key;
+		var url='{:url("/htpasswd")}/'+key;
         $.ajax({
             url: url,
             type: 'DELETE',
@@ -32,7 +32,7 @@ $(function(){
             data: {"date":$('#form input[name=date]').val(),'passwd':$('#form input[name=passwd]').val()},
         }).done(function(res) {
             alert(res);
-           window.location.href="{:url('/htpasswd',[],'','www')}";
+           window.location.href="{:url('/htpasswd')}";
         }).fail(function(res) {
             alert(res);
         });

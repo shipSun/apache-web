@@ -13,7 +13,7 @@ $(function(){
         forceParse: 0
     });
 	$('#submit').click(function(){
-		var url='{:url("/htpasswd",[],"","www")}';
+		var url='{:url("/htpasswd")}';
 		var postData = new FormData($('#form')[0]);
 		$.ajax({
 		    url: url,
@@ -24,7 +24,7 @@ $(function(){
 		    contentType: false
 		}).done(function(res) {
 			alert(res);
-			window.location.href="{:url('/htpasswd',[],'','www')}";
+			window.location.href="{:url('/htpasswd')}";
 		}).fail(function(res) {
 			alert(res);
 		});
