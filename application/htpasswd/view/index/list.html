@@ -12,7 +12,7 @@
     <tr>
         <th>{++$key}</th>
         <td>{$val['user']}</td>
-        <td>{$val['path']}</td>
+        <td>{:getPathName($val['path'])}</td>
         <td>{:date('Y-m-d', $val['date'])}</td>
         <td><a href="{:url('/htpasswd')}/{$val['key']}/edit">编辑</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="delete" data-id="{$val['key']}">删除</a></td>
     </tr>

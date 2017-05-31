@@ -4,8 +4,8 @@
     <label class="col-sm-2 control-label">产品</label>
     <div class="col-sm-1">
         <select class="form-control" name="path">
-            {foreach $model->getPathList() as $val}
-            <option value="{$val}" {if $model->isPath($val)}selected{/if}>{$val}</option>
+            {foreach $model->getPathList() as $key=>$val}
+            <option value="{$key}" {if $model->isPath($key)}selected{/if}>{$val}</option>
             {/foreach}
         </select>
     </div>

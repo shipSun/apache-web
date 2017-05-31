@@ -8,5 +8,5 @@ return [
 		'type'=>'redis',
 		'passwd_name'=>'.passwd',
 		'product_path'=>'F:\workspace\php\\',
-		'path'=>['aaa']
+		'path'=>['aaa'=>'测试','bb'=>'测试2']
 ];

@@ -12,7 +12,6 @@ class ApacheValue extends Value{
  	protected function __construct(){
  		$this->data = Config::load(APP_PATH.'apache.php', 'apache');
  	}
- 	
  	/**
  	 * @return Value
  	 */
