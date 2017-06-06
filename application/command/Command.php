@@ -43,6 +43,7 @@ class Command{
  		if($return_var==0){
  			return true;
  		}
+ 		Log::record('命令失败:'.$command.',错误code:'.$return_var, Log::ERROR);
  		return false;
  	}
  }
